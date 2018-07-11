@@ -14,17 +14,7 @@ class RoadworkController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Roadwork::with('markers.photos')->get();
     }
 
     /**
@@ -35,7 +25,17 @@ class RoadworkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'geometry' => 'required',
+            'referent' => 'required',
+            'department' => 'required'
+        ]);
+
+        $attributes['user_id'] = $request->user()->id;
+
+        return Roadwork::create($attributes);
     }
 
     /**
@@ -45,17 +45,6 @@ class RoadworkController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Roadwork $roadwork)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Roadwork  $roadwork
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Roadwork $roadwork)
     {
         //
     }
