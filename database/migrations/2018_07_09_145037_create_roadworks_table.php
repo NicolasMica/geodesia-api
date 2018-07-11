@@ -17,15 +17,19 @@ class CreateRoadworksTable extends Migration
 
             $table->increments('id');
             $table->string('name');
-            $table->text('description');
+            $table->text('description')
+                ->nullable();
+
             $table->text('geometry');
+
             $table->unsignedInteger('user_id')
               ->foreign('user_id')
               ->on('users');
+
             $table->string('referent');
             $table->string('department');
             $table->timestamps();
-            
+
         });
     }
 
