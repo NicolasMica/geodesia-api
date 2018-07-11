@@ -23,6 +23,7 @@ class CreatePhotosTable extends Migration
 
             $table->unsignedInteger('marker_id')
                 ->foreign('marker_id')
+                ->references('id')
                 ->on('markers');
 
             $table->timestamps();

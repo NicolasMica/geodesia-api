@@ -24,6 +24,7 @@ class CreateRoadworksTable extends Migration
 
             $table->unsignedInteger('user_id')
               ->foreign('user_id')
+              ->references('id')
               ->on('users');
 
             $table->string('referent');

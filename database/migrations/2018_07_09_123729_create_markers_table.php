@@ -29,10 +29,12 @@ class CreateMarkersTable extends Migration
 
             $table->unsignedInteger('user_id')
               ->foreign('user_id')
+              ->references('id')
               ->on('users');
 
             $table->unsignedInteger('roadwork_id')
               ->foreign('roadwork_id')
+              ->references('id')
               ->on('roadworks');
 
             $table->timestamps();
