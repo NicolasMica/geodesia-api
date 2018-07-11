@@ -31,3 +31,6 @@ Route::prefix('roadworks/{roadwork}')->group(function() {
     });
     
 });
+
+Route::resource('milestones', 'MilestoneController')
+    ->except('create', 'store', 'show', 'update', 'edit', 'destroy');
