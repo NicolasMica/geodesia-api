@@ -17,5 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('roadwords', 'RoadworkController')
+Route::resource('roadworks', 'RoadworkController')
     ->except('create', 'edit');
+
+Route::prefix('roadworks/{roadwork}')->group(function() {
+
+    Route::resource('markers', 'MarkerController')
+        ->except('create', 'edit');
+
+    Route::prefix('markers/{marker}')->group(function() {
+        Route::resource('photos', 'PhotoController')
+            ->except('create', 'edit');
+    });
+    
+});
