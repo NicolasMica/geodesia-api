@@ -16,20 +16,16 @@ class CreateRoadworksTable extends Migration
         Schema::create('roadworks', function (Blueprint $table) {
 
             $table->increments('id');
-
             $table->string('name');
-
             $table->text('description');
-
             $table->text('geometry');
-
             $table->unsignedInteger('user_id')
               ->foreign('user_id')
               ->on('users');
-
             $table->string('referent');
-
+            $table->string('department');
             $table->timestamps();
+            
         });
     }
 
