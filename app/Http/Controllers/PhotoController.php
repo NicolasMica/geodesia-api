@@ -10,21 +10,15 @@ class PhotoController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $roadwork, $marker)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Photo::where('marker_id', $marker)
+            ->get();
     }
 
     /**
@@ -35,51 +29,74 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $this->validateAttributes($request);
+
+        return Photo::create($attributes);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Photo  $photo
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
+     * @param  $photo - Photo Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function show(Photo $photo)
+    public function show(Request $request, $roadwork, $marker, $photo)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Photo  $photo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Photo $photo)
-    {
-        //
+        return Photo::where('id', $photo)
+            ->where('marker_id', $marker)
+            ->first();
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Photo  $photo
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
+     * @param  $photo - Photo Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Photo $photo)
+    public function update(Request $request, $roadwork, $marker, $photo)
     {
-        //
+        $attributes = $this->validateAttributes($request);
+
+        $photoToUpdate = Photo::where('marker_id', $marker)
+            ->where('id', $photo)
+            ->firstOrFail();
+            
+        $photoToUpdate->update($attributes);
+
+        return $photoToUpdate;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Photo  $photo
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
+     * @param  $photo - Photo Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Photo $photo)
+    public function destroy(Request $request, $roadwork, $marker, $photo)
     {
-        //
+        Photo::where('marker_id', $marker)
+            ->where('id', $photo)
+            ->delete();
+    }
+
+    /**
+     * Validate request attributes
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    protected function validateAttributes(Request $request){
+        return $request->validate([
+            'path' => 'required',
+            'description' => 'nullable'
+        ]);
     }
 }

@@ -25,7 +25,7 @@ class RoadworkController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $this->validateAttributes();
+        $attributes = $this->validateAttributes($request);
 
         $attributes['user_id'] = $request->user()->id;
 
@@ -55,17 +55,15 @@ class RoadworkController extends Controller
      */
     public function update(Request $request, $roadwork)
     {
-        $attributes = $this->validateAttributes();
+        $attributes = $this->validateAttributes($request);
 
-        return Roadwork::with('markers.photos')
+        $roadworkToUpdate = Roadwork::with('markers.photos')
             ->where('id', $roadwork)
-            ->update([
-                'name' => $attributes['name'],
-                'description' => $attributes['description'],
-                'geometry' => $attributes['geometry'],
-                'referent' => $attributes['referent'],
-                'department' => $attributes['department']
-            ]);
+            ->firstOrFail();
+
+        $roadworkToUpdate->update($attributes);
+
+        return $roadworkToUpdate;
     }
 
     /**

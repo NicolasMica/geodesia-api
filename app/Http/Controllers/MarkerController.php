@@ -28,7 +28,7 @@ class MarkerController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $this->validateAttributes();
+        $attributes = $this->validateAttributes($request);
 
         $attributes['user_id'] = $request->user()->id;
 
@@ -61,18 +61,16 @@ class MarkerController extends Controller
      */
     public function update(Request $request, $roadwork, $marker)
     {
-        $attributes = $this->validateAttributes();
+        $attributes = $this->validateAttributes($request);
 
-        return Marker::with('photos')
+        $markerToUpdate = Marker::with('photos')
             ->where('roadwork_id', $roadwork)
             ->where('id', $marker)
-            ->update([
-                'name' => $attributes['name'],
-                'description' => $attributes['description'],
-                'geometry' => $attributes['geometry'],
-                'latitude' => $attributes['latitude'],
-                'longitude' => $attributes['longitude']
-            ]);
+            ->firstOrFail();
+        
+        $markerToUpdate->update($attributes);
+
+        return $markerToUpdate;
     }
 
     /**
