@@ -25,13 +25,7 @@ class RoadworkController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'geometry' => 'required',
-            'referent' => 'required',
-            'department' => 'required'
-        ]);
+        $attributes = $this->validateAttributes();
 
         $attributes['user_id'] = $request->user()->id;
 
@@ -41,34 +35,65 @@ class RoadworkController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Roadwork  $roadwork
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function show(Roadwork $roadwork)
+    public function show(Request $request, $roadwork)
     {
-        //
+        return Roadwork::with('markers.photos')
+            ->where('id', $roadwork)
+            ->first();
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Roadwork  $roadwork
+     * @param  $roadwork - Roadwork Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Roadwork $roadwork)
+    public function update(Request $request, $roadwork)
     {
-        //
+        $attributes = $this->validateAttributes();
+
+        return Roadwork::with('markers.photos')
+            ->where('id', $roadwork)
+            ->update([
+                'name' => $attributes['name'],
+                'description' => $attributes['description'],
+                'geometry' => $attributes['geometry'],
+                'referent' => $attributes['referent'],
+                'department' => $attributes['department']
+            ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Roadwork  $roadwork
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Roadwork $roadwork)
+    public function destroy(Request $request, $roadwork)
     {
-        //
+        Roadwork::with('markers.photos')
+            ->where('id', $roadwork)
+            ->delete();
+    }
+
+    /**
+     * Validate request attributes
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    protected function validateAttributes(Request $request){
+        return $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'geometry' => 'required',
+            'referent' => 'required',
+            'department' => 'required'
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Marker;
+use App\Roadwork;
 use Illuminate\Http\Request;
 
 class MarkerController extends Controller
@@ -10,21 +11,13 @@ class MarkerController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $roadwork)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Marker::with('photos')->where('roadwork_id', $roadwork)->get();
     }
 
     /**
@@ -35,51 +28,81 @@ class MarkerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $this->validateAttributes();
+
+        $attributes['user_id'] = $request->user()->id;
+
+        return Marker::create($attributes);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Marker  $marker
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function show(Marker $marker)
+    public function show(Request $request, $roadwork, $marker)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Marker  $marker
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Marker $marker)
-    {
-        //
+        return Marker::with('photos')
+            ->where('roadwork_id', $roadwork)
+            ->where('id', $marker)
+            ->first();
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Marker  $marker
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Marker $marker)
+    public function update(Request $request, $roadwork, $marker)
     {
-        //
+        $attributes = $this->validateAttributes();
+
+        return Marker::with('photos')
+            ->where('roadwork_id', $roadwork)
+            ->where('id', $marker)
+            ->update([
+                'name' => $attributes['name'],
+                'description' => $attributes['description'],
+                'geometry' => $attributes['geometry'],
+                'latitude' => $attributes['latitude'],
+                'longitude' => $attributes['longitude']
+            ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Marker  $marker
+     * @param  \Illuminate\Http\Request  $request
+     * @param  $roadwork - Roadwork Primary Key (id)
+     * @param  $marker - Marker Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Marker $marker)
+    public function destroy(Request $request, $roadwork, $marker)
     {
-        //
+        Marker::with('photos')
+            ->where('roadwork_id', $roadwork)
+            ->where('id', $marker)
+            ->delete();
+    }
+
+    /**
+     * Validate request attributes
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    protected function validateAttributes(Request $request){
+        return $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'geometry' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required'
+        ]);
     }
 }
