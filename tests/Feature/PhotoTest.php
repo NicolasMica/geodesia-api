@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Photo;
+use App\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PhotoTest extends TestCase
@@ -16,20 +19,24 @@ class PhotoTest extends TestCase
         $this->be(
             factory(User::class)->create()
         );
+
         Storage::fake('public');
+
         $file = UploadedFile::fake()->image('file1.jpg');
-        $marker = factory(Marker::class)->make();
-        $this->postJson(route('admin.projects.store'), $marker->toArray() + [
-                'photo' => $file
-            ]);
-        $marker = Marker::where($marker->only('id'))
-            ->with('photos')
-            ->first();
-        foreach ($marker->photos as $photo) {
-            $sizes = array_keys($photo->sizes);
-            foreach ($sizes as $size) {
-                Storage::disk('public')->assertExists("uploads/{$marker->id}/{$photo->getFilename($size)}");
-            }
+        $photo = factory(Photo::class)->make();
+
+        $this->postJson(
+            route('photos.store', [$photo->marker->roadwork_id, $photo->marker_id]),
+            $photo->toArray() + ['photo' => $file]
+        );
+
+        $photo = $photo->where(
+            $photo->only('description', 'marker_id')
+        )->first();
+
+        $sizes = array_keys($photo->sizes);
+        foreach ($sizes as $size) {
+            Storage::disk('public')->assertExists("uploads/{$photo->marker_id}/{$photo->getFilename($size)}");
         }
     }
 }
