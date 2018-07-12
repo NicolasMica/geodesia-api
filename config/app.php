@@ -91,7 +91,19 @@ return [
     |
     */
 
-    'fallback_locale' => 'fr-FR',
+    'fallback_locale' => 'en',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Faker Locale Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The faker locale determines the default locale that will be used
+    | by faker. You are free to set this value to any of the locales which
+    | will be supported by the application.
+    |
+    */
+    'faker_locale' => 'fr_FR',
 
     /*
     |--------------------------------------------------------------------------
