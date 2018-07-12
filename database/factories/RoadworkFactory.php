@@ -17,7 +17,7 @@ $factory->define(App\Roadwork::class, function (Faker $faker) {
             return factory(User::class)->create()->id;
         },
         'referent' => $faker->name,
-        'department' => $faker->randomDigit . $faker->randomDigit
+        'department' => $faker->departmentName
 
     ];
 
