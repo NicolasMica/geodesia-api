@@ -28,7 +28,16 @@ class Photo extends Model
         'm' => ['width' => 1280, 'height' => 720],
         's' => ['width' => 576, 'height' => 324]
     ];
-    
+
+    /**
+     * A Photo belongsTo a Marker
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function marker()
+    {
+        return $this->belongsTo(Marker::class);
+    }
+
     /**
      * Thumbnail picture shortcut method
      * @return string
@@ -78,9 +87,11 @@ class Photo extends Model
                 $this->id . $size . $this->created_at
             ) . '.' . $format;
     }
+
     /**
      * Stores the newly created picture
      * @param UploadedFile $file
+     * @return Photo
      */
     public function store(UploadedFile $file)
     {
