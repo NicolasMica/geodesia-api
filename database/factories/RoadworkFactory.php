@@ -7,7 +7,7 @@ $factory->define(App\Roadwork::class, function (Faker $faker) {
 
     return [
 
-        'name' => $faker->name,
+        'name' => $faker->words(1, 5),
         'description' => $faker->paragraph(5, true),
         'from_lat' => $faker->randomFloat(6, -90, 90),
         'to_lat' => $faker->randomFloat(6, -90, 90),
