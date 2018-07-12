@@ -17,8 +17,6 @@ class CreatePhotosTable extends Migration
 
             $table->increments('id');
 
-            $table->string('path');
-
             $table->text('description');
 
             $table->unsignedInteger('marker_id')

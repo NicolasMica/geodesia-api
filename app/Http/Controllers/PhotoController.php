@@ -27,11 +27,16 @@ class PhotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $roadwork, $marker)
     {
         $attributes = $this->validateAttributes($request);
 
-        return Photo::create($attributes);
+        $request->validate([
+            'photo'   => 'file|mimes:jpg,jpeg,png,bmp,svg'
+        ]);
+
+        return Photo::create($attributes + ['marker_id' => $marker])
+            ->store($request->file('photo'));
     }
 
     /**
@@ -95,7 +100,6 @@ class PhotoController extends Controller
      */
     protected function validateAttributes(Request $request){
         return $request->validate([
-            'path' => 'required',
             'description' => 'nullable'
         ]);
     }
