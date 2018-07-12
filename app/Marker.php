@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Marker extends Model
 {
+
+    /**
+     * @var array - Fillable fields
+     */
+    protected $fillable = [
+        'name', 'description', 'geometry', 'latitude', 'longitude', 'user_id', 'roadwork_id'
+    ];
     
     public function photos()
     {
