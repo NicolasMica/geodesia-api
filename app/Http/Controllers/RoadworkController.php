@@ -88,8 +88,8 @@ class RoadworkController extends Controller
         return $request->validate([
             'name'        => 'required',
             'description' => 'nullable',
-            'form_lat'    => 'required|numeric',
-            'form_long'   => 'required|numeric',
+            'from_lat'    => 'required|numeric',
+            'from_long'   => 'required|numeric',
             'to_lat'      => 'required|numeric',
             'to_long'     => 'required|numeric',
             'referent'    => 'required',
