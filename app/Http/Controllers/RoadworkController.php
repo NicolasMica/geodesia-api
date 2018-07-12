@@ -10,7 +10,7 @@ class RoadworkController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Roadwork[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
@@ -35,11 +35,10 @@ class RoadworkController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  $roadwork - Roadwork Primary Key (id)
-     * @return \Illuminate\Http\Response
+     * @return Roadwork|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
-    public function show(Request $request, $roadwork)
+    public function show($roadwork)
     {
         return Roadwork::with('markers.photos')
             ->where('id', $roadwork)
@@ -49,9 +48,9 @@ class RoadworkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  $roadwork - Roadwork Primary Key (id)
-     * @return \Illuminate\Http\Response
+     * @return Roadwork|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */
     public function update(Request $request, $roadwork)
     {
@@ -69,11 +68,10 @@ class RoadworkController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  $roadwork - Roadwork Primary Key (id)
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function destroy(Request $request, $roadwork)
+    public function destroy($roadwork)
     {
         Roadwork::with('markers.photos')
             ->where('id', $roadwork)
@@ -83,15 +81,19 @@ class RoadworkController extends Controller
     /**
      * Validate request attributes
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @return
      */
     protected function validateAttributes(Request $request){
         return $request->validate([
-            'name' => 'required',
+            'name'        => 'required',
             'description' => 'nullable',
-            'geometry' => 'required',
-            'referent' => 'required',
-            'department' => 'required'
+            'form_lat'    => 'required|numeric',
+            'form_long'   => 'required|numeric',
+            'to_lat'      => 'required|numeric',
+            'to_long'     => 'required|numeric',
+            'referent'    => 'required',
+            'department'  => 'required'
         ]);
     }
 }
