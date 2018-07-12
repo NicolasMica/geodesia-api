@@ -151,7 +151,6 @@ return [
          * Package Service Providers...
          */
         \Laravel\Passport\PassportServiceProvider::class,
-        Phaza\LaravelPostgis\DatabaseServiceProvider::class,
 
         /*
          * Application Service Providers...
