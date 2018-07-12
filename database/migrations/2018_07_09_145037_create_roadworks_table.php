@@ -20,7 +20,17 @@ class CreateRoadworksTable extends Migration
             $table->text('description')
                 ->nullable();
 
-            $table->text('geometry');
+            $table->float('from_lat')
+                ->comment("Projection 3857");
+
+            $table->float('from_long')
+                ->comment("Projection 3857");
+
+            $table->float('to_lat')
+                ->comment("Projection 3857");
+
+            $table->float('to_long')
+                ->comment("Projection 3857");
 
             $table->unsignedInteger('user_id')
               ->foreign('user_id')
