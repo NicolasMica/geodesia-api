@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Roadwork;
+use App\User;
 use Illuminate\Http\Request;
 
 class RoadworkController extends Controller
@@ -27,7 +28,8 @@ class RoadworkController extends Controller
     {
         $attributes = $this->validateAttributes($request);
 
-        $attributes['user_id'] = $request->user()->id;
+//        $attributes['user_id'] = $request->user()->id;
+        $attributes['user_id'] = User::inRandomOrder()->first()->id;
 
         return Roadwork::create($attributes);
     }
