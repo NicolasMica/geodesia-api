@@ -21,8 +21,6 @@ class CreateMarkersTable extends Migration
 
             $table->text('description');
 
-            $table->text('geometry');
-
             $table->float('latitude');
 
             $table->float('longitude');

@@ -67,7 +67,7 @@ class MarkerController extends Controller
             ->where('roadwork_id', $roadwork)
             ->where('id', $marker)
             ->firstOrFail();
-        
+
         $markerToUpdate->update($attributes);
 
         return $markerToUpdate;
@@ -92,15 +92,15 @@ class MarkerController extends Controller
     /**
      * Validate request attributes
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @return
      */
     protected function validateAttributes(Request $request){
         return $request->validate([
             'name' => 'required',
             'description' => 'nullable',
-            'geometry' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required'
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric'
         ]);
     }
 }

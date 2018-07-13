@@ -11,9 +11,9 @@ class Marker extends Model
      * @var array - Fillable fields
      */
     protected $fillable = [
-        'name', 'description', 'geometry', 'latitude', 'longitude', 'user_id', 'roadwork_id'
+        'name', 'description', 'latitude', 'longitude', 'user_id', 'roadwork_id'
     ];
-    
+
     public function photos()
     {
         return $this->hasMany(Photo::class);
