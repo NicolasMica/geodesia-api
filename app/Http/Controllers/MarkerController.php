@@ -24,13 +24,15 @@ class MarkerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param $roadwork - Roadwork Primary Key (id)
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $roadwork)
     {
         $attributes = $this->validateAttributes($request);
 
+        $attributes['roadwork_id'] = $roadwork;
 //        $attributes['user_id'] = $request->user()->id;
         $attributes['user_id'] = User::inRandomOrder()->first()->id;
 
