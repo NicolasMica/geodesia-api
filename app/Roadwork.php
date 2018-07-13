@@ -12,9 +12,9 @@ class Roadwork extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'geometry', 'referent', 'department', 'user_id'
+        'name', 'description', 'referent', 'department', 'user_id', 'from_lat', 'from_long', 'to_long', 'to_lat'
     ];
-    
+
     /**
      * Relation to markers
      */
