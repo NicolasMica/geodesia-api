@@ -10,7 +10,6 @@ $factory->define(App\Marker::class, function (Faker $faker) {
 
         'name' => $faker->word,
         'description' => $faker->paragraph(5, true),
-        'geometry' => $faker->sha256,
         'latitude' => $faker->randomFloat(2, -60, 60),
         'longitude' => $faker->randomFloat(2, -60, 60),
         'user_id' => function() {
