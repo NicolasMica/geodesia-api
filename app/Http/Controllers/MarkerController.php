@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Marker;
 use App\Roadwork;
+use App\User;
 use Illuminate\Http\Request;
 
 class MarkerController extends Controller
@@ -30,7 +31,8 @@ class MarkerController extends Controller
     {
         $attributes = $this->validateAttributes($request);
 
-        $attributes['user_id'] = $request->user()->id;
+//        $attributes['user_id'] = $request->user()->id;
+        $attributes['user_id'] = User::inRandomOrder()->first()->id;
 
         return Marker::create($attributes);
     }
